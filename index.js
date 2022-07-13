@@ -21,6 +21,26 @@ const run = async()=>{
     try{
         await client.connect();
         console.log('connected to db');
+
+        //creating database collections
+
+        const studentCollection=client.db('school-space-database').collection('students');
+
+        //posting api for recording student informations
+        app.post('/student',async(req,res)=>{
+            const data= req.body;
+            const result= await studentCollection.insertOne(data);
+            res.send(result);
+        })
+
+        //getting all student records
+        app.get('/students',async(req,res)=>{
+            const result = await studentCollection.find().toArray();
+            res.send(result);
+        })
+
+
+
     }
 
     finally{
