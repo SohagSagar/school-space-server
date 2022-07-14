@@ -39,6 +39,27 @@ const run = async()=>{
             res.send(result);
         })
 
+        //geting one student record
+        app.get('/student/:id',async(req,res)=>{
+            const id = req.params.id;
+            const filter = {_id:ObjectId(id)}
+            const result = await studentCollection.findOne(filter);
+            res.send(result);
+        })
+
+        //updating a student info
+        app.put('/student/:id',async(req,res)=>{
+            const id = req.params.id;
+            const updatedInfo = req.body;
+            const filter = { _id: ObjectId(id) }
+            const options = { upsert: true };
+            const updatedDoc = {
+                $set: updatedInfo
+            };
+            const result = await studentCollection.updateOne(filter, updatedDoc, options);
+            res.send(result)
+        })
+
         //deleting a student
         app.delete('/student/:id',async(req,res)=>{
             const id=req.params.id;
